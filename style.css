@@ -1,0 +1,380 @@
+/* 全域設定與主題變數 - 溫馨咖啡廳暖色調 */
+:root {
+  --bg-color: #1a1412;                  /* 深濃縮咖啡棕 */
+  --card-bg: rgba(38, 30, 26, 0.75);      /* 烘焙咖啡豆暗棕 */
+  --accent-amber: #e69d45;               /* 溫暖琥珀橘 */
+  --accent-cream: #fce8cd;               /* 奶油白/卡布奇諾奶泡 */
+  --accent-brown: #c87d55;               /* 焦糖木質棕 */
+  --accent-yellow: #f1c40f;              /* 暖黃燈光 */
+  --text-color: #f3e9dc;                 /* 燕麥奶白 */
+  --text-muted: #b09e93;                 /* 復古麻布灰棕 */
+  --glow-shadow: 0 0 18px rgba(230, 157, 69, 0.35);
+  --border-radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+  padding: 20px;
+}
+
+/* 背景黃昏/燈光溫暖光暈 */
+.background-glow {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(230, 157, 69, 0.18) 0%, rgba(200, 125, 85, 0.1) 45%, rgba(26, 20, 18, 0) 75%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--accent-cream), var(--accent-amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 25px rgba(230, 157, 69, 0.25);
+  margin-bottom: 6px;
+}
+
+header .subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* 卡片通用樣式 */
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(230, 157, 69, 0.12);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--accent-cream);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 波紋/粒子視覺化區域 */
+.visualizer-container {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: rgba(22, 17, 15, 0.85);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(230, 157, 69, 0.25);
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+#visualizerCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.visualizer-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+#visualizerStatus {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: rgba(26, 20, 18, 0.7);
+  padding: 6px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(230, 157, 69, 0.15);
+  transition: opacity 0.5s ease;
+}
+
+/* A. 白噪音網格（改為每行 3 個，剛好容納 6 個頻道） */
+.ambient-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.ambient-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(230, 157, 69, 0.1);
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.ambient-item:hover {
+  border-color: rgba(230, 157, 69, 0.4);
+  transform: translateY(-2px);
+}
+
+.ambient-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ambient-header .icon {
+  font-size: 1.2rem;
+}
+
+.ambient-header .label {
+  font-size: 0.9rem;
+  font-weight: 400;
+  flex: 1;
+  margin-left: 8px;
+}
+
+/* Toggle 開關 - 暖琥珀色 */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.15);
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--accent-cream);
+  transition: .3s;
+}
+
+.slider.round {
+  border-radius: 22px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--accent-amber);
+  box-shadow: 0 0 10px var(--accent-amber);
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+/* 音量 Slider 樣式 - 木質焦糖色 */
+.volume-control input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+
+.volume-control input[type=range]:focus {
+  outline: none;
+}
+
+.volume-control input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.volume-control input[type=range]::-webkit-slider-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: var(--accent-brown);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5px;
+  box-shadow: 0 0 8px var(--accent-brown);
+  transition: transform 0.1s ease;
+}
+
+.volume-control input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* 精選情境按鈕區塊（3 列網格） */
+.preset-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.preset-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(230, 157, 69, 0.2);
+  color: var(--text-color);
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.preset-btn:hover {
+  background: rgba(230, 157, 69, 0.15);
+  border-color: var(--accent-amber);
+  transform: translateY(-2px);
+}
+
+.preset-btn:active {
+  transform: scale(0.97);
+}
+
+/* B. 9宮格琴鍵與音效墊 */
+.synth-section .hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: -8px;
+  margin-bottom: 16px;
+}
+
+.synth-pads {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 6px;
+}
+
+.pad {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(230, 157, 69, 0.15);
+  border-radius: 12px;
+  padding: 16px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.pad .key-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-amber);
+}
+
+.pad .note-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.pad:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent-amber);
+  transform: translateY(-2px);
+}
+
+.pad.active {
+  transform: scale(0.95);
+  background: linear-gradient(135deg, rgba(230, 157, 69, 0.4), rgba(200, 125, 85, 0.4));
+  border-color: var(--accent-amber);
+  box-shadow: var(--glow-shadow);
+}
+
+.pad.active .key-label {
+  color: var(--accent-cream);
+  text-shadow: 0 0 8px var(--accent-amber);
+}
+
+/* 情境按鈕點擊後的高亮樣式 */
+.preset-btn.active {
+  background: linear-gradient(135deg, rgba(230, 157, 69, 0.35), rgba(200, 125, 85, 0.35));
+  border-color: var(--accent-amber);
+  color: var(--accent-cream);
+  box-shadow: var(--glow-shadow);
+  transform: translateY(-2px);
+}
+
+footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 12px 0;
+}
+
+/* RWD 響應式調整 */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+  .preset-buttons {
+    grid-template-columns: repeat(2, 1fr); /* 手機版情境按鈕改為 2 列 */
+  }
+  .ambient-grid {
+    grid-template-columns: repeat(2, 1fr); /* 手機版白噪音改為每行 2 個 */
+  }
+  .synth-pads {
+    grid-template-columns: repeat(6, 1fr); /* 手機版琴鍵自動折行 */
+  }
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lo-Fi Chill Station / 賽博放鬆微型音樂盒</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glow"></div>
+
+    <div class="container">
+        <header>
+            <h1>☕ Cafe Lo-Fi Chill Station</h1>
+            <p class="subtitle">午後咖啡廳角落 · 疊加環境音與爵士鋼琴暖調</p>
+        </header>
+
+        <!-- 音樂波紋/粒子視覺化區塊 -->
+        <div class="visualizer-container">
+            <canvas id="visualizerCanvas"></canvas>
+            <div class="visualizer-overlay">
+                <span id="visualizerStatus">點擊畫面或按鍵盤開始體驗</span>
+            </div>
+        </div>
+
+        <!-- A. 背景白噪音合成區 -->
+        <section class="card ambient-section">
+            <h2>🌧️ 環境白噪音與特徵音效 (Ambient Channels)</h2>
+            <div class="ambient-grid">
+                <!-- 雨聲 -->
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span class="icon">🌧️</span>
+                        <span class="label">雨聲 (Rain)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-rain">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="volume-control">
+                        <input type="range" id="vol-rain" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+                </div>
+                <!-- 營火 -->
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span class="icon">🪵</span>
+                        <span class="label">營火 (Fire)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-fire">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="volume-control">
+                        <input type="range" id="vol-fire" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+                </div>
+                <!-- 咖啡廳 -->
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span class="icon">☕</span>
+                        <span class="label">咖啡廳 (Cafe)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-cafe">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="volume-control">
+                        <input type="range" id="vol-cafe" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+                </div>
+                <!-- 海浪 -->
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span class="icon">🌊</span>
+                        <span class="label">海浪 (Waves)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-waves">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="volume-control">
+                        <input type="range" id="vol-waves" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+                </div>
+                <!-- 新增：夜間蟲鳴 -->
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span class="icon">🦗</span>
+                        <span class="label">夜間蟲鳴 (Crickets)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-crickets">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="volume-control">
+                        <input type="range" id="vol-crickets" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+                </div>
+                <!-- 新增：室內微風 -->
+                <div class="ambient-item">
+                    <div class="ambient-header">
+                        <span class="icon">🍃</span>
+                        <span class="label">室內微風 (Wind)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-wind">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="volume-control">
+                        <input type="range" id="vol-wind" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 精選咖啡廳情境快速切換 -->
+        <section class="card presets-section">
+            <h2>✨ 精選咖啡廳情境 (Vibe Presets)</h2>
+            <div class="preset-buttons">
+                <button class="preset-btn" data-preset="cozy_corner">☕ 角落靠窗位</button>
+                <button class="preset-btn" data-preset="midnight_cabin">🪵 深夜木屋</button>
+                <button class="preset-btn" data-preset="midnight_library">📚 深夜圖書館</button>
+                <button class="preset-btn" data-preset="sunset_balcony">🌅 夕陽陽台</button>
+                <button class="preset-btn" data-preset="ocean_breeze">🌊 海邊琴房</button>
+                <button class="preset-btn" data-preset="silence_all">🔇 全部關閉</button>
+            </div>
+        </section>
+
+        <!-- B. 互動式琴鍵與音效墊 (12琴鍵擴充版) -->
+        <section class="card synth-section">
+            <h2>🎹 互動式琴鍵音效墊 (Lo-Fi Synth Pad)</h2>
+            <p class="hint">可點擊按鈕或敲擊電腦鍵盤 [A, S, D, F, G, H, J, K, L, U, I, O] 彈奏</p>
+
+            <div class="synth-pads">
+                <button class="pad" data-key="KeyA" data-note="C4"><span class="key-label">A</span><span class="note-label">C4</span></button>
+                <button class="pad" data-key="KeyS" data-note="D4"><span class="key-label">S</span><span class="note-label">D4</span></button>
+                <button class="pad" data-key="KeyD" data-note="E4"><span class="key-label">D</span><span class="note-label">E4</span></button>
+                <button class="pad" data-key="KeyF" data-note="F4"><span class="key-label">F</span><span class="note-label">F4</span></button>
+                <button class="pad" data-key="KeyG" data-note="G4"><span class="key-label">G</span><span class="note-label">G4</span></button>
+                <button class="pad" data-key="KeyH" data-note="A4"><span class="key-label">H</span><span class="note-label">A4</span></button>
+                <button class="pad" data-key="KeyJ" data-note="B4"><span class="key-label">J</span><span class="note-label">B4</span></button>
+                <button class="pad" data-key="KeyK" data-note="C5"><span class="key-label">K</span><span class="note-label">C5</span></button>
+                <button class="pad" data-key="KeyL" data-note="D5"><span class="key-label">L</span><span class="note-label">D5</span></button>
+                <button class="pad" data-key="KeyU" data-note="E5"><span class="key-label">U</span><span class="note-label">E5</span></button>
+                <button class="pad" data-key="KeyI" data-note="F5"><span class="key-label">I</span><span class="note-label">F5</span></button>
+                <button class="pad" data-key="KeyO" data-note="G5"><span class="key-label">O</span><span class="note-label">G5</span></button>
+            </div>
+        </section>
+
+        <footer>
+            <p>© Lo-Fi Chill Station · Built with Web Audio API</p>
+        </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

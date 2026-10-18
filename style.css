@@ -45,11 +45,12 @@ body {
 }
 
 .container {
-  width: 100%;
-  max-width: 800px;
+  width: 92%;               /* 讓它在畫面上有點邊距但盡量展開 */
+  max-width: 1200px;        /* 原本可能是 800px，把它調寬到 1200px 或更大 */
   display: flex;
   flex-direction: column;
   gap: 24px;
+  margin: 0 auto;           /* 保持置中 */
 }
 
 header {
